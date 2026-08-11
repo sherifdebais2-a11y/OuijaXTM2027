@@ -200,7 +200,7 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
     <div className="space-y-6 pb-12">
       
       {/* CASCADING FILTER BAR (المرحلة -> الصف -> المادة) */}
-      <div className="notebook-card p-4 sm:p-6 shadow-sm">
+      <div className="notebook-card p-4 sm:p-6 shadow-xs">
         <div className="flex flex-col gap-4">
           
           {/* Header & Filter Title */}
@@ -231,7 +231,7 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
                     onClick={() => onSelectStage(stg.id)}
                     className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                       isSelected
-                        ? 'bg-[#e11d48] text-white shadow-sm font-bold'
+                        ? 'bg-[#e11d48] text-white shadow-xs font-bold'
                         : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-rose-50 hover:text-[#e11d48]'
                     }`}
                   >
@@ -257,7 +257,7 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
                     onClick={() => onSelectGrade(g.id)}
                     className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-[#1e293b] text-white font-bold shadow-sm'
+                        ? 'bg-[#1e293b] text-white font-bold shadow-xs'
                         : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'
                     }`}
                   >
@@ -470,49 +470,57 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
                 <div className="flex items-center gap-2 overflow-x-auto pt-2 pb-1 scrollbar-none border-t border-slate-100">
                   <button
                     onClick={() => setActiveTab('videos')}
-                    className={`btn-pill text-xs py-1.5 px-3.5 whitespace-nowrap cursor-pointer ${
+                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
                       activeTab === 'videos'
-                        ? 'btn-pill-amber text-white'
-                        : 'bg-white text-slate-700 metal-badge hover:bg-slate-50'
+                        ? 'btn-glossy-amber'
+                        : 'hover:border-slate-300'
                     }`}
                   >
-                    <span className="btn-pill-icon w-5 h-5 text-amber-600 text-[10px]">🎬</span>
+                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'videos' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'}`}>
+                      🎬
+                    </div>
                     <span>شروحات السبورة ({lessonVideos.length})</span>
                   </button>
 
                   <button
                     onClick={() => setActiveTab('school_books')}
-                    className={`btn-pill text-xs py-1.5 px-3.5 whitespace-nowrap cursor-pointer ${
+                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
                       activeTab === 'school_books'
-                        ? 'btn-pill-pink text-white'
-                        : 'bg-white text-slate-700 metal-badge hover:bg-slate-50'
+                        ? 'btn-glossy-magenta'
+                        : 'hover:border-slate-300'
                     }`}
                   >
-                    <span className="btn-pill-icon w-5 h-5 text-rose-600 text-[10px]">📕</span>
+                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'school_books' ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-700'}`}>
+                      📕
+                    </div>
                     <span>كتب ومذكرات PDF ({lessonPdfs.length})</span>
                   </button>
 
                   <button
                     onClick={() => setActiveTab('notes')}
-                    className={`btn-pill text-xs py-1.5 px-3.5 whitespace-nowrap cursor-pointer ${
+                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
                       activeTab === 'notes'
-                        ? 'btn-pill-cyan text-white'
-                        : 'bg-white text-slate-700 metal-badge hover:bg-slate-50'
+                        ? 'btn-glossy-teal'
+                        : 'hover:border-slate-300'
                     }`}
                   >
-                    <span className="btn-pill-icon w-5 h-5 text-blue-600 text-[10px]">🧠</span>
+                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'notes' ? 'bg-white/20 text-white' : 'bg-teal-100 text-teal-700'}`}>
+                      🧠
+                    </div>
                     <span>ملخص السبورة</span>
                   </button>
 
                   <button
                     onClick={() => setActiveTab('quiz')}
-                    className={`btn-pill text-xs py-1.5 px-3.5 whitespace-nowrap cursor-pointer ${
+                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
                       activeTab === 'quiz'
-                        ? 'btn-pill-purple text-white'
-                        : 'bg-white text-slate-700 metal-badge hover:bg-slate-50'
+                        ? 'btn-glossy-purple'
+                        : 'hover:border-slate-300'
                     }`}
                   >
-                    <span className="btn-pill-icon w-5 h-5 text-violet-600 text-[10px]">📝</span>
+                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'quiz' ? 'bg-white/20 text-white' : 'bg-purple-100 text-purple-700'}`}>
+                      📝
+                    </div>
                     <span>اختبار تفاعلي ({lessonQuizzes.length})</span>
                   </button>
                 </div>

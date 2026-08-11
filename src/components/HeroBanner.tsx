@@ -221,10 +221,12 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                       {activeItem.lesson && (
                         <button
                           onClick={() => onOpenLesson(activeItem.lesson!.id)}
-                          className="btn-pill btn-pill-amber text-[11px] py-1 px-3"
+                          className="btn-glossy-4k btn-glossy-amber text-[11px] py-1 px-2.5"
                         >
                           <span>مشاهدة الدرس كامل</span>
-                          <span className="btn-pill-icon w-4 h-4 text-amber-600">←</span>
+                          <div className="btn-glossy-icon w-5 h-5 bg-white/25 text-white">
+                            ←
+                          </div>
                         </button>
                       )}
                     </div>
@@ -275,7 +277,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                     {stageIcon}
                   </div>
                   <div>
-                    <div className="font-bold text-sm font-alexandria text-slate-800">
+                    <div className="font-bold text-sm sm:text-base font-alexandria text-slate-800">
                       {stg.name}
                     </div>
                     <div className="text-[11px] text-slate-500 font-medium mt-0.5">

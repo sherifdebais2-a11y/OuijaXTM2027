@@ -95,52 +95,60 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2.5">
           <button
             onClick={() => setFilterType('all')}
-            className={`btn-pill text-xs py-1.5 px-4 cursor-pointer ${
+            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer ${
               filterType === 'all'
-                ? 'btn-pill-amber text-white'
-                : 'bg-white text-slate-700 metal-badge hover:bg-slate-50'
+                ? 'btn-glossy-dark'
+                : 'hover:border-slate-300'
             }`}
           >
-            <span className="btn-pill-icon w-5 h-5 text-amber-600 text-[10px]">✨</span>
-            <span>الكل ({pdfs.length + infographics.length})</span>
+            <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${filterType === 'all' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}`}>
+              📚
+            </div>
+            <span>جميع الوسائط ({pdfs.length + infographics.length})</span>
           </button>
 
           <button
             onClick={() => setFilterType('books')}
-            className={`btn-pill text-xs py-1.5 px-4 cursor-pointer ${
+            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer ${
               filterType === 'books'
-                ? 'btn-pill-pink text-white'
-                : 'bg-white text-slate-700 metal-badge hover:bg-slate-50'
+                ? 'btn-glossy-magenta'
+                : 'hover:border-slate-300'
             }`}
           >
-            <span className="btn-pill-icon w-5 h-5 text-rose-600 text-[10px]">📕</span>
+            <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${filterType === 'books' ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-700'}`}>
+              📕
+            </div>
             <span>كتب المدرسة الرسمية ({pdfs.filter(p => p.type === 'school_book').length})</span>
           </button>
 
           <button
             onClick={() => setFilterType('notes')}
-            className={`btn-pill text-xs py-1.5 px-4 cursor-pointer ${
+            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer ${
               filterType === 'notes'
-                ? 'btn-pill-cyan text-white'
-                : 'bg-white text-slate-700 metal-badge hover:bg-slate-50'
+                ? 'btn-glossy-teal'
+                : 'hover:border-slate-300'
             }`}
           >
-            <span className="btn-pill-icon w-5 h-5 text-blue-600 text-[10px]">📄</span>
+            <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${filterType === 'notes' ? 'bg-white/20 text-white' : 'bg-teal-100 text-teal-700'}`}>
+              📄
+            </div>
             <span>المذكرات والملخصات ({pdfs.filter(p => p.type !== 'school_book').length})</span>
           </button>
 
           <button
             onClick={() => setFilterType('infographics')}
-            className={`btn-pill text-xs py-1.5 px-4 cursor-pointer ${
+            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer ${
               filterType === 'infographics'
-                ? 'btn-pill-purple text-white'
-                : 'bg-white text-slate-700 metal-badge hover:bg-slate-50'
+                ? 'btn-glossy-purple'
+                : 'hover:border-slate-300'
             }`}
           >
-            <span className="btn-pill-icon w-5 h-5 text-violet-600 text-[10px]">🧠</span>
+            <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${filterType === 'infographics' ? 'bg-white/20 text-white' : 'bg-purple-100 text-purple-700'}`}>
+              🧠
+            </div>
             <span>الإنفوجرافات ({infographics.length})</span>
           </button>
         </div>

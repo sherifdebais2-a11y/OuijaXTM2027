@@ -309,7 +309,7 @@ export default function App() {
   const featuredSubject = featuredUnit ? db.subjects.find(s => s.id === featuredUnit.subjectId) : undefined;
 
   return (
-    <div dir="rtl" className="min-h-screen font-sans bg-[#faf8f5] text-slate-800">
+    <div dir="rtl" className="min-h-screen font-sans text-slate-900">
       
       {/* Platform Header */}
       <Header

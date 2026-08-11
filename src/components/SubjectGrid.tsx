@@ -144,12 +144,6 @@ export const SubjectGrid: React.FC<SubjectGridProps> = ({
                     <FileText className="w-3.5 h-3.5 text-emerald-400" />
                     <span>{pdfCount} كتب</span>
                   </span>
-                  {infoCount > 0 && (
-                    <span className="flex items-center gap-1 font-mono text-blue-300 bg-blue-950/50 px-2 py-0.5 rounded-full border border-blue-800/50">
-                      <ImageIcon className="w-3.5 h-3.5 text-blue-400" />
-                      <span>{infoCount} ملخص</span>
-                    </span>
-                  )}
                 </div>
 
                 <span className="text-slate-400 font-semibold bg-slate-800 px-2.5 py-0.5 rounded-full border border-slate-700">

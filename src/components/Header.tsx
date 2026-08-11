@@ -6,12 +6,12 @@ import {
   Users,
   Bookmark,
   Settings,
-  Moon,
-  Sun,
   Menu,
   X,
   Sparkles,
-  ChevronDown
+  ChevronDown,
+  Filter,
+  Bot
 } from 'lucide-react';
 import { EducationalStage, Grade } from '../types';
 
@@ -65,21 +65,23 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 notebook-header text-slate-800 transition-colors duration-200">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-2 border-slate-900 shadow-sm transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
+        
+        {/* ROW 1: BRAND LOGO, SEARCH BAR & QUICK ACTIONS */}
+        <div className="flex items-center justify-between h-16 gap-4 border-b border-slate-100 py-2">
           
           {/* Logo & Platform Title */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentView('home')}>
-            <div className="w-10 h-10 rounded-xl bg-[#0f172a] text-white flex items-center justify-center shadow-md font-bold">
-              <GraduationCap className="w-6 h-6" />
+          <div className="flex items-center gap-3 cursor-pointer shrink-0" onClick={() => setCurrentView('home')}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-900 via-slate-800 to-indigo-950 text-white flex items-center justify-center shadow-md font-bold border border-slate-700">
+              <GraduationCap className="w-6 h-6 text-amber-400" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-xl tracking-tight text-[#0f172a] font-alexandria">
+                <span className="font-bold text-lg sm:text-xl tracking-tight text-slate-900 font-alexandria">
                   منصة تعلّم
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#fef08a] text-[#854d0e] font-bold border border-[#fde047]">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold border border-amber-300">
                   مصر 🇪🇬
                 </span>
               </div>
@@ -89,42 +91,108 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-2 font-medium text-xs">
-            <button
-              onClick={() => setCurrentView('home')}
-              className={`px-3.5 py-1.5 rounded-full transition-all flex items-center gap-2 cursor-pointer ${
-                currentView === 'home'
-                  ? 'btn-pill-amber text-white shadow-md'
-                  : 'text-slate-700 hover:bg-slate-100 hover:text-[#0f172a]'
-              }`}
+          {/* Central Search Bar */}
+          <div className="hidden lg:flex flex-1 max-w-md mx-4">
+            <div
+              onClick={onOpenSearchModal}
+              className="w-full flex items-center gap-2 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 hover:border-slate-300 text-slate-700 px-3.5 py-2 rounded-xl text-xs transition-all cursor-pointer shadow-inner"
             >
-              <span className="w-6 h-6 rounded-full bg-white text-amber-600 flex items-center justify-center font-bold shadow-xs shrink-0">
-                <Sparkles className="w-3.5 h-3.5" />
-              </span>
-              <span>الرئيسية</span>
+              <Search className="w-4 h-4 text-slate-500 shrink-0" />
+              <span className="flex-1 text-slate-400 font-medium">ابحث عن درس، مادة، أو كتاب...</span>
+              <kbd className="text-[10px] bg-white border border-slate-200 text-slate-500 px-2 py-0.5 rounded font-mono shadow-2xs">
+                ⌘K
+              </kbd>
+            </div>
+          </div>
+
+          {/* Quick Actions & AI Assistant */}
+          <div className="flex items-center gap-2.5">
+            
+            {/* Ask AI Assistant Button */}
+            {onOpenAiChat && (
+              <button
+                onClick={onOpenAiChat}
+                className="btn-glossy-4k btn-glossy-coral py-1.5 px-3 text-xs shadow-md hidden sm:flex items-center gap-2"
+              >
+                <div className="btn-glossy-icon bg-white/20 text-white">
+                  <Bot className="w-4 h-4" />
+                </div>
+                <span>اسأل الدحيح 🎓</span>
+              </button>
+            )}
+
+            {/* Mobile Search Button */}
+            <button
+              onClick={onOpenSearchModal}
+              className="lg:hidden p-2.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200"
+              title="بحث"
+            >
+              <Search className="w-4 h-4" />
             </button>
 
-            {/* Stages Dropdown */}
+            {/* Admin Settings */}
+            <button
+              onClick={() => setCurrentView('admin')}
+              title="لوحة التحكم"
+              className={`p-2.5 rounded-xl transition-all border cursor-pointer ${
+                currentView === 'admin'
+                  ? 'bg-slate-900 text-white border-slate-900 shadow-md'
+                  : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+              }`}
+            >
+              <Settings className="w-4 h-4" />
+            </button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2.5 rounded-xl bg-slate-900 text-white shadow-md"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+
+        </div>
+
+        {/* ROW 2: CLEAN NAVIGATION BAR WITH 4K GLOSSY BUTTONS */}
+        <div className="hidden md:flex items-center justify-between py-2 overflow-x-auto scrollbar-none">
+          <nav className="flex items-center gap-2 text-xs w-full">
+            
+            {/* Home Navigation Button */}
+            <button
+              onClick={() => setCurrentView('home')}
+              className={`btn-glossy-4k ${
+                currentView === 'home'
+                  ? 'btn-glossy-amber'
+                  : 'hover:border-slate-300'
+              }`}
+            >
+              <div className={`btn-glossy-icon ${currentView === 'home' ? 'bg-white/25 text-white' : 'bg-amber-100 text-amber-700'}`}>
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <span className="font-bold">الرئيسية</span>
+            </button>
+
+            {/* Educational Stages Dropdown Button */}
             <div className="relative">
               <button
                 onClick={() => setStagesDropdownOpen(!stagesDropdownOpen)}
-                className={`px-3.5 py-1.5 rounded-full transition-all flex items-center gap-2 cursor-pointer ${
+                className={`btn-glossy-4k ${
                   currentView === 'catalog'
-                    ? 'btn-pill-cyan text-white shadow-md'
-                    : 'text-slate-700 hover:bg-slate-100 hover:text-[#0f172a]'
+                    ? 'btn-glossy-blue'
+                    : 'hover:border-slate-300'
                 }`}
               >
-                <span className="w-6 h-6 rounded-full bg-white text-blue-600 flex items-center justify-center font-bold shadow-xs shrink-0">
-                  <BookOpen className="w-3.5 h-3.5" />
-                </span>
-                <span>المراحل والصفوف</span>
+                <div className={`btn-glossy-icon ${currentView === 'catalog' ? 'bg-white/25 text-white' : 'bg-blue-100 text-blue-700'}`}>
+                  <GraduationCap className="w-4 h-4" />
+                </div>
+                <span className="font-bold">المراحل والصفوف</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform ${stagesDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {stagesDropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 w-72 metal-border p-2 z-50 animate-in fade-in slide-in-from-top-2">
-                  <div className="px-3 py-2 text-xs font-semibold text-slate-500 border-b border-slate-200">
+                <div className="absolute top-full right-0 mt-2 w-72 metal-border p-2 z-50 animate-in fade-in slide-in-from-top-2 bg-white shadow-xl">
+                  <div className="px-3 py-2 text-xs font-semibold text-slate-500 border-b border-slate-100">
                     اختر المرحلة الدراسية:
                   </div>
                   <div className="space-y-1 mt-1">
@@ -134,15 +202,15 @@ export const Header: React.FC<HeaderProps> = ({
                         onClick={() => handleStageSelect(stg.id)}
                         className={`w-full text-right px-3 py-2.5 rounded-xl flex items-center justify-between transition-all text-xs font-medium cursor-pointer ${
                           selectedStageId === stg.id && currentView === 'catalog'
-                            ? 'bg-slate-100 text-[#0f172a] font-bold'
+                            ? 'bg-blue-50 text-blue-900 font-bold border border-blue-200'
                             : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
                         <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-[#0f172a]" />
+                          <span className="w-2 h-2 rounded-full bg-blue-600" />
                           <span>{stg.name}</span>
                         </div>
-                        <span className="text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                        <span className="text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 font-semibold">
                           {stg.gradesCount} صفوف
                         </span>
                       </button>
@@ -152,99 +220,84 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </div>
 
+            {/* Digital Library Button */}
             <button
               onClick={() => setCurrentView('library')}
-              className={`px-3.5 py-1.5 rounded-full transition-all flex items-center gap-2 cursor-pointer ${
+              className={`btn-glossy-4k ${
                 currentView === 'library'
-                  ? 'btn-pill-pink text-white shadow-md'
-                  : 'text-slate-700 hover:bg-slate-100 hover:text-[#0f172a]'
+                  ? 'btn-glossy-magenta'
+                  : 'hover:border-slate-300'
               }`}
             >
-              <span className="w-6 h-6 rounded-full bg-white text-rose-600 flex items-center justify-center font-bold shadow-xs shrink-0">
-                <BookOpen className="w-3.5 h-3.5" />
-              </span>
-              <span>المكتبة والكتب</span>
+              <div className={`btn-glossy-icon ${currentView === 'library' ? 'bg-white/25 text-white' : 'bg-rose-100 text-rose-700'}`}>
+                <BookOpen className="w-4 h-4" />
+              </div>
+              <span className="font-bold">المكتبة والكتب</span>
             </button>
 
+            {/* Teachers Button */}
             <button
               onClick={() => setCurrentView('teachers')}
-              className={`px-3.5 py-1.5 rounded-full transition-all flex items-center gap-2 cursor-pointer ${
+              className={`btn-glossy-4k ${
                 currentView === 'teachers'
-                  ? 'btn-pill-purple text-white shadow-md'
-                  : 'text-slate-700 hover:bg-slate-100 hover:text-[#0f172a]'
+                  ? 'btn-glossy-purple'
+                  : 'hover:border-slate-300'
               }`}
             >
-              <span className="w-6 h-6 rounded-full bg-white text-violet-600 flex items-center justify-center font-bold shadow-xs shrink-0">
-                <Users className="w-3.5 h-3.5" />
-              </span>
-              <span>المدرسين</span>
+              <div className={`btn-glossy-icon ${currentView === 'teachers' ? 'bg-white/25 text-white' : 'bg-purple-100 text-purple-700'}`}>
+                <Users className="w-4 h-4" />
+              </div>
+              <span className="font-bold">المدرسين والمعلمين</span>
             </button>
 
+            {/* Bookmarks / Favorites Button */}
             <button
               onClick={() => setCurrentView('bookmarks')}
-              className={`px-3.5 py-1.5 rounded-full transition-all flex items-center gap-2 relative cursor-pointer ${
+              className={`btn-glossy-4k ${
                 currentView === 'bookmarks'
-                  ? 'btn-pill-lime text-white shadow-md'
-                  : 'text-slate-700 hover:bg-slate-100 hover:text-[#0f172a]'
+                  ? 'btn-glossy-emerald'
+                  : 'hover:border-slate-300'
               }`}
             >
-              <span className="w-6 h-6 rounded-full bg-white text-emerald-600 flex items-center justify-center font-bold shadow-xs shrink-0">
-                <Bookmark className="w-3.5 h-3.5" />
-              </span>
-              <span>المفضلة</span>
+              <div className={`btn-glossy-icon ${currentView === 'bookmarks' ? 'bg-white/25 text-white' : 'bg-emerald-100 text-emerald-700'}`}>
+                <Bookmark className="w-4 h-4" />
+              </div>
+              <span className="font-bold">المفضلة</span>
               {bookmarksCount > 0 && (
-                <span className="bg-[#0f172a] text-white text-[10px] font-black px-1.5 py-0.2 rounded-full min-w-[18px] text-center">
+                <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${currentView === 'bookmarks' ? 'bg-white text-emerald-900' : 'bg-emerald-600 text-white'}`}>
                   {bookmarksCount}
                 </span>
               )}
             </button>
+
+            {/* Quick Interactive Workbench Jump Button */}
+            <button
+              onClick={() => {
+                setCurrentView('catalog');
+                const workbenchEl = document.getElementById('interactive-workbench');
+                if (workbenchEl) {
+                  workbenchEl.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="btn-glossy-4k btn-glossy-teal ml-auto text-xs py-1.5 px-3"
+            >
+              <div className="btn-glossy-icon bg-white/20 text-white">
+                <Filter className="w-3.5 h-3.5" />
+              </div>
+              <span>تصفية المنهج التفاعلي</span>
+            </button>
+
           </nav>
-
-          {/* Quick Search trigger & Admin */}
-          <div className="flex items-center gap-2">
-            
-            {/* Search Trigger Button */}
-            <button
-              onClick={onOpenSearchModal}
-              className="flex items-center gap-2 bg-slate-50 border border-slate-200 hover:border-slate-400 text-slate-700 px-3.5 py-1.5 rounded-xl text-xs transition-all text-right cursor-pointer shadow-none"
-            >
-              <Search className="w-4 h-4 text-[#0f172a]" />
-              <span className="hidden sm:inline text-slate-500">ابحث عن درس، مادة، أو مدرس...</span>
-              <kbd className="hidden lg:inline-block text-[10px] bg-white border border-slate-200 text-slate-400 px-1.5 py-0.5 rounded">
-                ⌘K
-              </kbd>
-            </button>
-
-            {/* Admin Panel Button */}
-            <button
-              onClick={() => setCurrentView('admin')}
-              title="لوحة التحكم"
-              className={`p-2 rounded-xl transition-all border cursor-pointer ${
-                currentView === 'admin'
-                  ? 'bg-[#0f172a] text-white border-[#0f172a]'
-                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-[#0f172a]'
-              }`}
-            >
-              <Settings className="w-4 h-4" />
-            </button>
-
-            {/* Mobile menu hamburger */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl bg-white border border-slate-200 text-slate-700"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
         </div>
+
       </div>
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-800 bg-slate-900 px-4 pt-3 pb-6 space-y-2">
+        <div className="md:hidden border-t border-slate-800 bg-slate-900 px-4 pt-3 pb-6 space-y-2 text-white">
           <button
             onClick={() => { setCurrentView('home'); setMobileMenuOpen(false); }}
-            className="w-full text-right px-4 py-2.5 rounded-xl bg-slate-800/60 text-slate-200 font-medium flex items-center gap-2"
+            className="w-full text-right px-4 py-2.5 rounded-xl bg-slate-800 text-slate-100 font-bold flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4 text-amber-400" />
             <span>الرئيسية</span>
@@ -264,43 +317,43 @@ export const Header: React.FC<HeaderProps> = ({
             ))}
           </div>
 
-          <div className="pt-2 border-t border-slate-800 space-y-1">
+          <div className="pt-2 border-t border-slate-800 space-y-2">
             <button
               onClick={() => { setCurrentView('library'); setMobileMenuOpen(false); }}
-              className="w-full text-right px-4 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 flex items-center gap-2"
+              className="w-full text-right px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-2 font-bold"
             >
-              <BookOpen className="w-4 h-4 text-emerald-400" />
+              <BookOpen className="w-4 h-4 text-rose-400" />
               <span>المكتبة والكتب 📕</span>
             </button>
 
             <button
               onClick={() => { setCurrentView('teachers'); setMobileMenuOpen(false); }}
-              className="w-full text-right px-4 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 flex items-center gap-2"
+              className="w-full text-right px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-2 font-bold"
             >
-              <Users className="w-4 h-4 text-blue-400" />
-              <span>المدرسين 👨‍🏫</span>
+              <Users className="w-4 h-4 text-purple-400" />
+              <span>المدرسين والمعلمين 👨‍🏫</span>
             </button>
 
             {onOpenAiChat && (
               <button
                 onClick={() => { onOpenAiChat(); setMobileMenuOpen(false); }}
-                className="w-full text-right px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-bold flex items-center gap-2 shadow-xs"
+                className="w-full text-right px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-bold flex items-center gap-2 shadow-sm"
               >
-                <Sparkles className="w-4 h-4 text-amber-200" />
+                <Bot className="w-4 h-4 text-white" />
                 <span>اسأل الدحيح الذكي 🎓</span>
               </button>
             )}
 
             <button
               onClick={() => { setCurrentView('bookmarks'); setMobileMenuOpen(false); }}
-              className="w-full text-right px-4 py-2.5 rounded-xl hover:bg-slate-800 text-slate-200 flex items-center justify-between"
+              className="w-full text-right px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-between font-bold"
             >
               <div className="flex items-center gap-2">
-                <Bookmark className="w-4 h-4 text-rose-400" />
+                <Bookmark className="w-4 h-4 text-emerald-400" />
                 <span>دروسي المفضلة</span>
               </div>
               {bookmarksCount > 0 && (
-                <span className="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full">
+                <span className="bg-emerald-500 text-white text-xs px-2 py-0.5 rounded-full">
                   {bookmarksCount}
                 </span>
               )}
@@ -308,7 +361,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => { setCurrentView('admin'); setMobileMenuOpen(false); }}
-              className="w-full text-right px-4 py-2.5 rounded-xl bg-amber-500/10 text-amber-300 border border-amber-500/20 flex items-center gap-2 font-medium"
+              className="w-full text-right px-4 py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-2 font-medium"
             >
               <Settings className="w-4 h-4 text-amber-400" />
               <span>لوحة التحكم والإدارة</span>
@@ -319,3 +372,4 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
+

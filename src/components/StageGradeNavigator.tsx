@@ -1,6 +1,6 @@
 import React from 'react';
 import { EducationalStage, Grade } from '../types';
-import { GraduationCap, ChevronLeft, Sparkles, BookOpen } from 'lucide-react';
+import { GraduationCap, ChevronLeft, BookOpen, Check } from 'lucide-react';
 
 interface StageGradeNavigatorProps {
   stages: EducationalStage[];
@@ -23,6 +23,17 @@ export const StageGradeNavigator: React.FC<StageGradeNavigatorProps> = ({
   const stageGrades = grades.filter(g => g.stageId === selectedStageId);
   const currentGrade = grades.find(g => g.id === selectedGradeId) || stageGrades[0];
 
+  // Map stage/grade index to deep sharp glossy colors
+  const glossyColors = [
+    'btn-glossy-blue',
+    'btn-glossy-teal',
+    'btn-glossy-magenta',
+    'btn-glossy-purple',
+    'btn-glossy-emerald',
+    'btn-glossy-coral',
+    'btn-glossy-amber'
+  ];
+
   return (
     <div className="bg-slate-950 border-b border-slate-800 text-slate-100 py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
@@ -31,12 +42,13 @@ export const StageGradeNavigator: React.FC<StageGradeNavigatorProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="w-2 h-5 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full"></span>
-            <h2 className="text-base font-bold tracking-tight text-slate-100 font-alexandria">الصف الدراسي:</h2>
+            <h2 className="text-base font-bold tracking-tight text-slate-100 font-alexandria">اختر الصف والمرحلة:</h2>
           </div>
 
-          <div className="flex items-center bg-slate-900 p-1.5 rounded-full border border-slate-800 shadow-inner">
-            {stages.map(stg => {
+          <div className="flex flex-wrap items-center gap-2">
+            {stages.map((stg, idx) => {
               const active = stg.id === selectedStageId;
+              const colorClass = glossyColors[idx % glossyColors.length];
               return (
                 <button
                   key={stg.id}
@@ -45,13 +57,15 @@ export const StageGradeNavigator: React.FC<StageGradeNavigatorProps> = ({
                     const firstG = grades.find(g => g.stageId === stg.id);
                     if (firstG) onSelectGrade(firstG.id);
                   }}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                  className={`btn-glossy-4k text-xs py-1.5 px-3.5 ${
                     active
-                      ? 'btn-pill-cyan text-white shadow-md'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? colorClass
+                      : 'bg-slate-900/90 text-slate-300 border-slate-800 hover:border-slate-700'
                   }`}
                 >
-                  {active && <span className="w-2 h-2 rounded-full bg-white animate-pulse" />}
+                  <div className={`btn-glossy-icon ${active ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                    <GraduationCap className="w-3.5 h-3.5" />
+                  </div>
                   <span>{stg.name}</span>
                 </button>
               );
@@ -61,22 +75,23 @@ export const StageGradeNavigator: React.FC<StageGradeNavigatorProps> = ({
 
         {/* Grade Buttons Ribbon */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
-          {stageGrades.map(grade => {
+          {stageGrades.map((grade, idx) => {
             const isSelected = grade.id === selectedGradeId;
+            const colorClass = glossyColors[(idx + 2) % glossyColors.length];
             return (
               <button
                 key={grade.id}
                 onClick={() => onSelectGrade(grade.id)}
-                className={`p-2.5 rounded-full text-center transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                className={`btn-glossy-4k text-xs py-2 px-3 flex items-center justify-between ${
                   isSelected
-                    ? 'btn-pill-pink text-white font-bold shadow-lg'
-                    : 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:border-slate-700'
+                    ? `${colorClass} shadow-lg`
+                    : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700'
                 }`}
               >
-                <div className={`w-5 h-5 rounded-full ${isSelected ? 'bg-white text-rose-600' : 'bg-slate-800 text-slate-400'} flex items-center justify-center text-[10px] font-bold shrink-0`}>
-                  {isSelected ? '✓' : '•'}
+                <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${isSelected ? 'bg-white/30 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                  {isSelected ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : '•'}
                 </div>
-                <span className="text-xs font-semibold leading-snug">
+                <span className="font-bold text-xs truncate">
                   {grade.name}
                 </span>
               </button>
@@ -91,8 +106,10 @@ export const StageGradeNavigator: React.FC<StageGradeNavigatorProps> = ({
               <span className="text-cyan-400 font-bold">المرحلة المختارة:</span>
               <span className="text-slate-400">{currentStage.name}</span>
               <ChevronLeft className="w-4 h-4 text-slate-600" />
-              <span className="btn-pill btn-pill-cyan text-[11px] py-1 px-3">
-                <span className="btn-pill-icon w-4 h-4 text-blue-600">🎓</span>
+              <span className="btn-glossy-4k btn-glossy-blue text-[11px] py-1 px-3">
+                <div className="btn-glossy-icon w-5 h-5 bg-white/20 text-white">
+                  <GraduationCap className="w-3 h-3" />
+                </div>
                 <span>{currentGrade.name}</span>
               </span>
             </div>
@@ -108,3 +125,4 @@ export const StageGradeNavigator: React.FC<StageGradeNavigatorProps> = ({
     </div>
   );
 };
+
