@@ -1,0 +1,6 @@
+{
+  "name": "منصة مدرستي التعليمية",
+  "description": "منصة تعليمية مصرية شاملة للمراحل الابتدائية والإعدادية والثانوية تحتوي على شروحات فيديو يوتيوب، كتب وزارة، مذكرات PDF، إنفوجرافات واختبارات تفاعلية.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
