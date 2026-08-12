@@ -242,8 +242,29 @@ export default function App() {
   };
 
   const handleResetDatabase = () => {
-    localStorage.removeItem('madrasaty_platform_db_v1');
-    setDb(loadStoredData());
+    if (window.confirm('هل أنت تأكد من إعادة ضبط قاعدة البيانات للبيانات المبدئية للأصل؟ ستفقد أي تغييرات غير محسوبة.')) {
+      localStorage.removeItem('madrasaty_platform_db_v1');
+      setDb(loadStoredData());
+    }
+  };
+
+  const handleExportDatabase = () => {
+    const jsonString = JSON.stringify(db, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const dateStr = new Date().toISOString().split('T')[0];
+    link.href = url;
+    link.download = `taalam_egypt_backup_${dateStr}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleRestoreDatabase = (restoredDb: DatabaseStore) => {
+    saveDataToStorage(restoredDb);
+    setDb(restoredDb);
   };
 
   // Derived filtered data for current Grade & Subject
@@ -309,7 +330,7 @@ export default function App() {
   const featuredSubject = featuredUnit ? db.subjects.find(s => s.id === featuredUnit.subjectId) : undefined;
 
   return (
-    <div dir="rtl" className="min-h-screen font-sans text-slate-900">
+    <div dir="rtl" className="min-h-screen max-w-full overflow-x-hidden font-sans text-slate-900 bg-slate-50">
       
       {/* Platform Header */}
       <Header
@@ -331,7 +352,7 @@ export default function App() {
       />
 
       {/* Main Content Router View */}
-      <main>
+      <main className="max-w-full overflow-x-hidden">
         
         {/* VIEW 1: HOME & UNIFIED INTERACTIVE WORKBENCH */}
         {currentView === 'home' && (
@@ -511,6 +532,8 @@ export default function App() {
             onDeleteInfographic={handleDeleteInfographic}
             onUpdateVideoLesson={handleUpdateVideoLesson}
             onResetDatabase={handleResetDatabase}
+            onExportDatabase={handleExportDatabase}
+            onRestoreDatabase={handleRestoreDatabase}
           />
         )}
 

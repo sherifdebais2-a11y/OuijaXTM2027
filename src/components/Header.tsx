@@ -69,23 +69,23 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ROW 1: BRAND LOGO, SEARCH BAR & QUICK ACTIONS */}
-        <div className="flex items-center justify-between h-16 gap-4 border-b border-slate-100 py-2">
+        <div className="flex items-center justify-between h-16 gap-3 md:border-b border-slate-100 py-2">
           
           {/* Logo & Platform Title */}
-          <div className="flex items-center gap-3 cursor-pointer shrink-0" onClick={() => setCurrentView('home')}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-900 via-slate-800 to-indigo-950 text-white flex items-center justify-center shadow-md font-bold border border-slate-700">
-              <GraduationCap className="w-6 h-6 text-amber-400" />
+          <div className="flex items-center gap-2.5 cursor-pointer shrink-0" onClick={() => setCurrentView('home')}>
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-slate-900 via-slate-800 to-indigo-950 text-white flex items-center justify-center shadow-md font-bold border border-slate-700">
+              <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-lg sm:text-xl tracking-tight text-slate-900 font-alexandria">
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold text-base sm:text-xl tracking-tight text-slate-900 font-alexandria">
                   منصة تعلّم
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold border border-amber-300">
+                <span className="text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold border border-amber-300">
                   مصر 🇪🇬
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 hidden sm:block font-readex">
+              <p className="text-[10px] sm:text-[11px] text-slate-500 hidden sm:block font-readex">
                 المكتبة الرقمية الشاملة للمناهج الدراسية
               </p>
             </div>
@@ -106,35 +106,35 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Quick Actions & AI Assistant */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             
-            {/* Ask AI Assistant Button */}
+            {/* Ask AI Assistant Button (Desktop / Tablet) */}
             {onOpenAiChat && (
               <button
                 onClick={onOpenAiChat}
-                className="btn-glossy-4k btn-glossy-coral py-1.5 px-3 text-xs shadow-md hidden sm:flex items-center gap-2"
+                className="btn-glossy-4k btn-glossy-coral py-1.5 px-3 text-xs shadow-md hidden md:flex items-center gap-2 cursor-pointer"
               >
                 <div className="btn-glossy-icon bg-white/20 text-white">
                   <Bot className="w-4 h-4" />
                 </div>
-                <span>اسأل الدحيح 🎓</span>
+                <span className="whitespace-nowrap">اسأل الدحيح 🎓</span>
               </button>
             )}
 
             {/* Mobile Search Button */}
             <button
               onClick={onOpenSearchModal}
-              className="lg:hidden p-2.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200"
+              className="lg:hidden p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer"
               title="بحث"
             >
               <Search className="w-4 h-4" />
             </button>
 
-            {/* Admin Settings */}
+            {/* Admin Settings (Tablet/Desktop) */}
             <button
               onClick={() => setCurrentView('admin')}
               title="لوحة التحكم"
-              className={`p-2.5 rounded-xl transition-all border cursor-pointer ${
+              className={`p-2 rounded-xl transition-all border cursor-pointer hidden sm:flex ${
                 currentView === 'admin'
                   ? 'bg-slate-900 text-white border-slate-900 shadow-md'
                   : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
@@ -146,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2.5 rounded-xl bg-slate-900 text-white shadow-md"
+              className="md:hidden p-2 rounded-xl bg-slate-900 text-white shadow-md cursor-pointer"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>

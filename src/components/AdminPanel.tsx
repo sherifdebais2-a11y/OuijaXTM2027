@@ -34,7 +34,10 @@ import {
   Eye,
   EyeOff,
   LogOut,
-  AlertCircle
+  AlertCircle,
+  Download,
+  Upload,
+  FileJson
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -60,6 +63,8 @@ interface AdminPanelProps {
   onDeleteInfographic: (id: string) => void;
   onUpdateVideoLesson?: (videoId: string, newLessonId: string) => void;
   onResetDatabase: () => void;
+  onExportDatabase?: () => void;
+  onRestoreDatabase?: (data: any) => void;
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({
@@ -84,7 +89,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   onDeletePdf,
   onDeleteInfographic,
   onUpdateVideoLesson,
-  onResetDatabase
+  onResetDatabase,
+  onExportDatabase,
+  onRestoreDatabase
 }) => {
   const [activeTab, setActiveTab] = useState<'lesson' | 'video' | 'pdf' | 'infographic' | 'quiz' | 'teacher' | 'manage'>('video');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -190,6 +197,33 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const notify = (msg: string) => {
     setSuccessMessage(msg);
     setTimeout(() => setSuccessMessage(null), 3500);
+  };
+
+  const handleFileRestore = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const content = event.target?.result as string;
+        const parsedData = JSON.parse(content);
+
+        if (!parsedData || typeof parsedData !== 'object' || !Array.isArray(parsedData.lessons) || !Array.isArray(parsedData.units)) {
+          alert('خطأ: صيغة الملف غير صحيحة. يرجى اختيار ملف استرجاع JSON صادر من المنصة.');
+          return;
+        }
+
+        if (onRestoreDatabase) {
+          onRestoreDatabase(parsedData);
+          notify('تمت استعادة كافة الدروس والبيانات من الملف الاحتياطي بنجاح! 🎉');
+        }
+      } catch (err) {
+        alert('تعذر قراءة ملف JSON الاحتياطي. يرجى التأكد من اختيار ملف سليم بصيغة JSON.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
   };
 
   // Submit Handlers
@@ -504,7 +538,36 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 flex-wrap">
+            {onExportDatabase && (
+              <button
+                onClick={onExportDatabase}
+                title="تصدير نسخة احتياطية من جميع منشوراتك ودروسك لحفظها على جهازك"
+                className="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+              >
+                <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span className="hidden sm:inline">تصدير نسخة احتياطية</span>
+                <span className="sm:hidden">تصدير</span>
+              </button>
+            )}
+
+            {onRestoreDatabase && (
+              <label
+                title="رفع ملف JSON احتياطي لاستعادة المحتوى والمنشورات فوراً"
+                className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+              >
+                <Upload className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span className="hidden sm:inline">استرجاع نسخة</span>
+                <span className="sm:hidden">استرجاع</span>
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={handleFileRestore}
+                  className="hidden"
+                />
+              </label>
+            )}
+
             <button
               onClick={() => setIsChangePinOpen(true)}
               className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
@@ -1308,6 +1371,72 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 <span>إعادة ضبط البيانات للأصلية</span>
               </button>
             </h2>
+
+            {/* BACKUP & RESTORE SECTION */}
+            <div className="p-5 bg-gradient-to-br from-slate-900 via-slate-850 to-slate-900 text-white rounded-2xl border border-slate-700 space-y-4 shadow-md">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-700/80 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+                    <Download className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm font-alexandria text-slate-100">النسخ الاحتياطي والاستعادة الفورية (Backup & Restore)</h3>
+                    <p className="text-[11px] text-slate-300">احفظ كل منشوراتك ودروسك بملف على جهازك واسترجعها فوراً بلمسة واحدة</p>
+                  </div>
+                </div>
+
+                {onExportDatabase && (
+                  <button
+                    onClick={onExportDatabase}
+                    className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs flex items-center gap-2 transition-all shadow-md cursor-pointer shrink-0"
+                  >
+                    <Download className="w-4 h-4 stroke-[3]" />
+                    <span>تصدير ملف Backup (JSON)</span>
+                  </button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                {/* Export Box */}
+                <div className="p-4 bg-slate-800/80 rounded-xl border border-slate-700 space-y-2">
+                  <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
+                    <FileJson className="w-4 h-4" />
+                    <span>تصدير وحفظ بياناتك الحاليّة</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    يقوم بتنزيل ملف JSON شامل يحتفظ بكل الوحدات والدروس والفيديوهات والأسئلة والاختبارات التي قمت بإضافتها.
+                  </p>
+                  <button
+                    onClick={onExportDatabase}
+                    className="w-full mt-2 py-2.5 px-3 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer border border-slate-600 transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5 text-amber-400" />
+                    <span>تنزيل ملف النسخة الاحتياطية الآن</span>
+                  </button>
+                </div>
+
+                {/* Import Box */}
+                <div className="p-4 bg-slate-800/80 rounded-xl border border-slate-700 space-y-2">
+                  <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+                    <Upload className="w-4 h-4" />
+                    <span>استرجاع البيانات من ملف سابق</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    رفع ملف JSON احتفظت به سابقاً لاستعادة جميع منشوراتك ودروسك فوراً وتطبيقها على المنصة بلمسة واحدة.
+                  </p>
+                  <label className="w-full mt-2 py-2.5 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-xs">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>اختر ملف JSON للاسترجاع</span>
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={handleFileRestore}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              </div>
+            </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">

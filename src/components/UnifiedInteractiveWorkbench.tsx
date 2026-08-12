@@ -217,19 +217,19 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
           </div>
 
           {/* STEP 1: STAGE SELECTOR */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-            <div className="md:col-span-2 text-xs font-bold text-slate-600 flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md bg-[#e11d48] text-white flex items-center justify-center text-[10px] font-black">1</span>
-              <span>اختر المرحلة:</span>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 items-center">
+            <div className="md:col-span-2 text-xs font-bold text-slate-600 flex items-center gap-2 shrink-0">
+              <span className="w-5 h-5 rounded-md bg-[#e11d48] text-white flex items-center justify-center text-[10px] font-black shrink-0">1</span>
+              <span className="whitespace-nowrap">اختر المرحلة:</span>
             </div>
-            <div className="md:col-span-10 flex flex-wrap gap-2">
+            <div className="md:col-span-10 min-w-0 flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
               {stages.map(stg => {
                 const isSelected = stg.id === selectedStageId;
                 return (
                   <button
                     key={stg.id}
                     onClick={() => onSelectStage(stg.id)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
                       isSelected
                         ? 'bg-[#e11d48] text-white shadow-xs font-bold'
                         : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-rose-50 hover:text-[#e11d48]'
@@ -243,19 +243,19 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
           </div>
 
           {/* STEP 2: GRADE SELECTOR */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center pt-2 border-t border-slate-100">
-            <div className="md:col-span-2 text-xs font-bold text-slate-600 flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md bg-[#e11d48] text-white flex items-center justify-center text-[10px] font-black">2</span>
-              <span>اختر الصف:</span>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 items-center pt-2 border-t border-slate-100">
+            <div className="md:col-span-2 text-xs font-bold text-slate-600 flex items-center gap-2 shrink-0">
+              <span className="w-5 h-5 rounded-md bg-[#e11d48] text-white flex items-center justify-center text-[10px] font-black shrink-0">2</span>
+              <span className="whitespace-nowrap">اختر الصف:</span>
             </div>
-            <div className="md:col-span-10 flex flex-wrap gap-2">
+            <div className="md:col-span-10 min-w-0 flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
               {stageGrades.map(g => {
                 const isSelected = g.id === selectedGradeId;
                 return (
                   <button
                     key={g.id}
                     onClick={() => onSelectGrade(g.id)}
-                    className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                    className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all cursor-pointer shrink-0 ${
                       isSelected
                         ? 'bg-[#1e293b] text-white font-bold shadow-xs'
                         : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'
@@ -269,25 +269,27 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
           </div>
 
           {/* STEP 3: SUBJECT SELECTOR RIBBON */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center pt-2 border-t border-slate-100">
-            <div className="md:col-span-2 text-xs font-bold text-slate-600 flex items-center gap-2">
-              <span className="w-5 h-5 rounded-md bg-[#e11d48] text-white flex items-center justify-center text-[10px] font-black">3</span>
-              <span>اختر المادة:</span>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 items-center pt-2 border-t border-slate-100">
+            <div className="md:col-span-2 text-xs font-bold text-slate-600 flex items-center gap-2 shrink-0">
+              <span className="w-5 h-5 rounded-md bg-[#e11d48] text-white flex items-center justify-center text-[10px] font-black shrink-0">3</span>
+              <span className="whitespace-nowrap">اختر المادة:</span>
             </div>
-            <div className="md:col-span-10 flex flex-wrap gap-2">
+            <div className="md:col-span-10 min-w-0 flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
               {gradeSubjects.map(sub => {
                 const isSelected = sub.id === selectedSubjectId;
                 return (
                   <button
                     key={sub.id}
                     onClick={() => onSelectSubject(sub.id)}
-                    className={`btn-pill text-xs py-1.5 px-4 cursor-pointer ${
+                    className={`btn-glossy-4k text-xs py-1.5 px-3 cursor-pointer shrink-0 ${
                       isSelected
-                        ? 'btn-pill-pink text-white shadow-md'
-                        : 'bg-white text-slate-700 metal-badge hover:bg-slate-50'
+                        ? 'btn-glossy-magenta'
+                        : 'bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
-                    <span className="btn-pill-icon w-5 h-5 text-rose-600 text-[10px]">📚</span>
+                    <div className={`btn-glossy-icon w-5 h-5 rounded-md ${isSelected ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-700'}`}>
+                      📚
+                    </div>
                     <span>{sub.name}</span>
                   </button>
                 );
@@ -301,8 +303,114 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
       {/* SPLIT WORKBENCH */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* RIGHT SIDE (DESKTOP): LESSON & UNIT DIRECTORY SIDEBAR (35%) */}
-        <div className="lg:col-span-4 space-y-4 lg:order-2">
+        {/* MAIN WORKSPACE: INTEGRATED VIDEO & RESOURCE WORKBENCH (65%) - ORDER 1 ON MOBILE */}
+        <div className="order-1 lg:order-1 lg:col-span-8 space-y-4">
+          {activeLesson ? (
+            <div className="notebook-card rounded-2xl overflow-hidden shadow-sm border border-slate-200">
+              
+              {/* LESSON TITLE & TAB NAVIGATION WORKBENCH BAR */}
+              <div className="p-3 sm:p-5 border-b border-slate-200 bg-white space-y-3 sm:space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+                  <div className="space-y-0.5 sm:space-y-1">
+                    <div className="flex items-center gap-2 text-[11px] sm:text-xs text-[#e11d48] font-bold">
+                      <span>{currentSubject?.name}</span>
+                      <span>/</span>
+                      <span>{activeUnit?.title}</span>
+                    </div>
+                    <h2 className="text-lg sm:text-2xl font-bold text-slate-800 font-alexandria leading-tight">
+                      {activeLesson.title}
+                    </h2>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => onToggleBookmark(activeLesson.id)}
+                      className={`p-2 sm:p-2.5 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                        isBookmarked
+                          ? 'bg-[#e11d48] text-white border-[#e11d48] shadow-sm'
+                          : 'bg-white border-slate-200 text-slate-700 hover:bg-rose-50'
+                      }`}
+                    >
+                      <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-white' : ''}`} />
+                      <span className="hidden sm:inline">{isBookmarked ? 'محفوظ بالمفضلة' : 'حفظ بالمفضلة'}</span>
+                    </button>
+
+                    <button
+                      onClick={() => onToggleComplete(activeLesson.id)}
+                      className={`p-2 sm:p-2.5 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                        isCompleted
+                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+                          : 'bg-white border-slate-200 text-slate-700 hover:bg-emerald-50'
+                      }`}
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">{isCompleted ? 'تم الاستكمال' : 'تحديد كمكتمل'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* CONTENT RESOURCE TYPE TABS */}
+                <div className="flex items-center gap-2 overflow-x-auto pt-2 pb-1 scrollbar-none border-t border-slate-100">
+                  <button
+                    onClick={() => setActiveTab('videos')}
+                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
+                      activeTab === 'videos'
+                        ? 'btn-glossy-amber'
+                        : 'hover:border-slate-300'
+                    }`}
+                  >
+                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'videos' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'}`}>
+                      🎬
+                    </div>
+                    <span>شروحات السبورة ({lessonVideos.length})</span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('school_books')}
+                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
+                      activeTab === 'school_books'
+                        ? 'btn-glossy-magenta'
+                        : 'hover:border-slate-300'
+                    }`}
+                  >
+                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'school_books' ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-700'}`}>
+                      📕
+                    </div>
+                    <span>كتب ومذكرات PDF ({lessonPdfs.length})</span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('notes')}
+                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
+                      activeTab === 'notes'
+                        ? 'btn-glossy-teal'
+                        : 'hover:border-slate-300'
+                    }`}
+                  >
+                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'notes' ? 'bg-white/20 text-white' : 'bg-teal-100 text-teal-700'}`}>
+                      🧠
+                    </div>
+                    <span>ملخص السبورة</span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('quiz')}
+                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
+                      activeTab === 'quiz'
+                        ? 'btn-glossy-purple'
+                        : 'hover:border-slate-300'
+                    }`}
+                  >
+                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'quiz' ? 'bg-white/20 text-white' : 'bg-purple-100 text-purple-700'}`}>
+                      📝
+                    </div>
+                    <span>اختبار تفاعلي ({lessonQuizzes.length})</span>
+                  </button>
+                </div>
+              </div>
+
+        {/* RIGHT SIDE (DESKTOP): LESSON & UNIT DIRECTORY SIDEBAR (35%) - ORDER 2 ON MOBILE */}
+        <div className="order-2 lg:order-2 lg:col-span-4 space-y-4">
           <div className="metal-border p-4 space-y-4 sticky top-20">
             
             {/* Subject Info Header */}
@@ -419,112 +527,6 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
 
           </div>
         </div>
-
-        {/* LEFT / MAIN WORKSPACE: INTEGRATED VIDEO & RESOURCE WORKBENCH (65%) */}
-        <div className="lg:col-span-8 space-y-4 lg:order-1">
-          {activeLesson ? (
-            <div className="notebook-card rounded-2xl overflow-hidden shadow-sm border border-slate-200">
-              
-              {/* LESSON TITLE & TAB NAVIGATION WORKBENCH BAR */}
-              <div className="p-5 border-b border-slate-200 bg-white space-y-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-xs text-[#e11d48] font-bold">
-                      <span>{currentSubject?.name}</span>
-                      <span>/</span>
-                      <span>{activeUnit?.title}</span>
-                    </div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-slate-800 font-alexandria">
-                      {activeLesson.title}
-                    </h2>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => onToggleBookmark(activeLesson.id)}
-                      className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                        isBookmarked
-                          ? 'bg-[#e11d48] text-white border-[#e11d48] shadow-sm'
-                          : 'bg-white border-slate-200 text-slate-700 hover:bg-rose-50'
-                      }`}
-                    >
-                      <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-white' : ''}`} />
-                      <span className="hidden sm:inline">{isBookmarked ? 'محفوظ بالمفضلة' : 'حفظ بالمفضلة'}</span>
-                    </button>
-
-                    <button
-                      onClick={() => onToggleComplete(activeLesson.id)}
-                      className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                        isCompleted
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
-                          : 'bg-white border-slate-200 text-slate-700 hover:bg-emerald-50'
-                      }`}
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span className="hidden sm:inline">{isCompleted ? 'تم الاستكمال' : 'تحديد كمكتمل'}</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* CONTENT RESOURCE TYPE TABS */}
-                <div className="flex items-center gap-2 overflow-x-auto pt-2 pb-1 scrollbar-none border-t border-slate-100">
-                  <button
-                    onClick={() => setActiveTab('videos')}
-                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
-                      activeTab === 'videos'
-                        ? 'btn-glossy-amber'
-                        : 'hover:border-slate-300'
-                    }`}
-                  >
-                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'videos' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'}`}>
-                      🎬
-                    </div>
-                    <span>شروحات السبورة ({lessonVideos.length})</span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab('school_books')}
-                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
-                      activeTab === 'school_books'
-                        ? 'btn-glossy-magenta'
-                        : 'hover:border-slate-300'
-                    }`}
-                  >
-                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'school_books' ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-700'}`}>
-                      📕
-                    </div>
-                    <span>كتب ومذكرات PDF ({lessonPdfs.length})</span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab('notes')}
-                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
-                      activeTab === 'notes'
-                        ? 'btn-glossy-teal'
-                        : 'hover:border-slate-300'
-                    }`}
-                  >
-                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'notes' ? 'bg-white/20 text-white' : 'bg-teal-100 text-teal-700'}`}>
-                      🧠
-                    </div>
-                    <span>ملخص السبورة</span>
-                  </button>
-
-                  <button
-                    onClick={() => setActiveTab('quiz')}
-                    className={`btn-glossy-4k text-xs py-1.5 px-3 whitespace-nowrap cursor-pointer ${
-                      activeTab === 'quiz'
-                        ? 'btn-glossy-purple'
-                        : 'hover:border-slate-300'
-                    }`}
-                  >
-                    <div className={`btn-glossy-icon w-6 h-6 rounded-lg ${activeTab === 'quiz' ? 'bg-white/20 text-white' : 'bg-purple-100 text-purple-700'}`}>
-                      📝
-                    </div>
-                    <span>اختبار تفاعلي ({lessonQuizzes.length})</span>
-                  </button>
-                </div>
-              </div>
 
               {/* TAB CONTENT WORKSPACE SCREEN */}
               <div className="p-5">

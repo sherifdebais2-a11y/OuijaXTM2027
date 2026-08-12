@@ -94,11 +94,11 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
           </div>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        {/* Filter Pills - Horizontally Scrollable on Mobile */}
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
           <button
             onClick={() => setFilterType('all')}
-            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer ${
+            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer shrink-0 ${
               filterType === 'all'
                 ? 'btn-glossy-dark'
                 : 'hover:border-slate-300'
@@ -112,7 +112,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
 
           <button
             onClick={() => setFilterType('books')}
-            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer ${
+            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer shrink-0 ${
               filterType === 'books'
                 ? 'btn-glossy-magenta'
                 : 'hover:border-slate-300'
@@ -126,7 +126,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
 
           <button
             onClick={() => setFilterType('notes')}
-            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer ${
+            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer shrink-0 ${
               filterType === 'notes'
                 ? 'btn-glossy-teal'
                 : 'hover:border-slate-300'
@@ -140,7 +140,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
 
           <button
             onClick={() => setFilterType('infographics')}
-            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer ${
+            className={`btn-glossy-4k text-xs py-1.5 px-3.5 cursor-pointer shrink-0 ${
               filterType === 'infographics'
                 ? 'btn-glossy-purple'
                 : 'hover:border-slate-300'
