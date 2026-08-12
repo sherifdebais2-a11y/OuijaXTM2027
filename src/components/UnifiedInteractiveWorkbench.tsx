@@ -409,125 +409,6 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
                 </div>
               </div>
 
-        {/* RIGHT SIDE (DESKTOP): LESSON & UNIT DIRECTORY SIDEBAR (35%) - ORDER 2 ON MOBILE */}
-        <div className="order-2 lg:order-2 lg:col-span-4 space-y-4">
-          <div className="metal-border p-4 space-y-4 sticky top-20">
-            
-            {/* Subject Info Header */}
-            <div className="flex items-center justify-between border-b border-rose-100 pb-3">
-              <div>
-                <span className="text-[10px] text-[#e11d48] font-bold uppercase tracking-wider">
-                  المادة المختارة حالياً
-                </span>
-                <h3 className="text-base font-bold text-slate-800 font-alexandria">
-                  {currentSubject?.name || 'المادة الدراسية'}
-                </h3>
-              </div>
-              <span className="text-xs sticky-note px-2.5 py-0.5 font-bold">
-                {currentLessons.length} دروس
-              </span>
-            </div>
-
-            {/* Quick Filter Search inside Sidebar */}
-            <div className="relative">
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-2.5" />
-              <input
-                type="text"
-                placeholder="ابحث عن درس في المادة..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-3 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#e11d48]"
-              />
-            </div>
-
-            {/* UNITS & LESSONS ACCORDION */}
-            <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1 scrollbar-thin">
-              {currentUnits.length === 0 ? (
-                <div className="p-4 text-center text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-200">
-                  لا توجد وحدات أو دروس مضافة لهذا المنهج بعد.
-                </div>
-              ) : (
-                currentUnits.map(unit => {
-                  const uLessons = currentLessons.filter(l => l.unitId === unit.id && l.title.includes(searchQuery));
-                  const isExpanded = expandedUnitIds.includes(unit.id);
-                  const unitVideoCount = uLessons.reduce((acc, l) => acc + videos.filter(v => v.lessonId === l.id).length, 0);
-
-                  return (
-                    <div key={unit.id} className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden">
-                      <button
-                        onClick={() => toggleUnitExpand(unit.id)}
-                        className="w-full p-3 bg-slate-100/80 transition-colors flex items-center justify-between text-right cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-md bg-[#e11d48] text-white flex items-center justify-center font-bold text-[11px]">
-                            {unit.orderNumber}
-                          </span>
-                          <span className="text-xs font-bold text-slate-800 line-clamp-1">{unit.title}</span>
-                          {unitVideoCount > 0 && (
-                            <span className="bg-rose-100 text-[#e11d48] text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">
-                              🎬 {unitVideoCount}
-                            </span>
-                          )}
-                        </div>
-                        <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                      </button>
-
-                      {isExpanded && (
-                        <div className="p-2 space-y-1">
-                          {uLessons.map(les => {
-                            const isSelectedLesson = les.id === activeLesson?.id;
-                            const lesVids = videos.filter(v => v.lessonId === les.id);
-                            const lesPdfs = pdfs.filter(p => p.lessonId === les.id);
-
-                            return (
-                              <button
-                                key={les.id}
-                                onClick={() => setActiveLessonId(les.id)}
-                                className={`w-full p-2.5 rounded-xl transition-all text-right cursor-pointer flex items-center justify-between ${
-                                  isSelectedLesson
-                                    ? 'bg-[#e11d48] text-white font-bold shadow-sm'
-                                    : 'hover:bg-rose-50 text-slate-700'
-                                }`}
-                              >
-                                <div className="space-y-1">
-                                  <div className="text-xs font-semibold flex items-center gap-1.5">
-                                    <span>{les.title}</span>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-[10px]">
-                                    {lesVids.length > 0 ? (
-                                      <span className={isSelectedLesson ? 'bg-white/20 text-white font-bold px-1.5 py-0.5 rounded' : 'bg-rose-100 text-[#e11d48] font-bold px-1.5 py-0.5 rounded'}>
-                                        🎬 {lesVids.length} فيديو
-                                      </span>
-                                    ) : (
-                                      <span className={isSelectedLesson ? 'text-rose-100' : 'text-slate-400'}>لا يوجد فيديو</span>
-                                    )}
-                                    {lesPdfs.length > 0 && (
-                                      <span className={isSelectedLesson ? 'bg-white/20 text-white font-bold px-1.5 py-0.5 rounded' : 'bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded'}>
-                                        📕 {lesPdfs.length} كتب
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-
-                                {isSelectedLesson && (
-                                  <span className="text-[10px] bg-white text-[#e11d48] font-bold px-2 py-0.5 rounded-md shadow-xs shrink-0">
-                                    يعرض الآن
-                                  </span>
-                                )}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })
-              )}
-            </div>
-
-          </div>
-        </div>
-
               {/* TAB CONTENT WORKSPACE SCREEN */}
               <div className="p-5">
                 
@@ -822,6 +703,125 @@ export const UnifiedInteractiveWorkbench: React.FC<UnifiedInteractiveWorkbenchPr
               </p>
             </div>
           )}
+        </div>
+
+        {/* RIGHT SIDE (DESKTOP): LESSON & UNIT DIRECTORY SIDEBAR (35%) - ORDER 2 ON MOBILE */}
+        <div className="order-2 lg:order-2 lg:col-span-4 space-y-4">
+          <div className="metal-border p-4 space-y-4 sticky top-20">
+            
+            {/* Subject Info Header */}
+            <div className="flex items-center justify-between border-b border-rose-100 pb-3">
+              <div>
+                <span className="text-[10px] text-[#e11d48] font-bold uppercase tracking-wider">
+                  المادة المختارة حالياً
+                </span>
+                <h3 className="text-base font-bold text-slate-800 font-alexandria">
+                  {currentSubject?.name || 'المادة الدراسية'}
+                </h3>
+              </div>
+              <span className="text-xs sticky-note px-2.5 py-0.5 font-bold">
+                {currentLessons.length} دروس
+              </span>
+            </div>
+
+            {/* Quick Filter Search inside Sidebar */}
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-2.5" />
+              <input
+                type="text"
+                placeholder="ابحث عن درس في المادة..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full pl-3 pr-8 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#e11d48]"
+              />
+            </div>
+
+            {/* UNITS & LESSONS ACCORDION */}
+            <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1 scrollbar-thin">
+              {currentUnits.length === 0 ? (
+                <div className="p-4 text-center text-xs text-slate-400 bg-slate-50 rounded-xl border border-slate-200">
+                  لا توجد وحدات أو دروس مضافة لهذا المنهج بعد.
+                </div>
+              ) : (
+                currentUnits.map(unit => {
+                  const uLessons = currentLessons.filter(l => l.unitId === unit.id && l.title.includes(searchQuery));
+                  const isExpanded = expandedUnitIds.includes(unit.id);
+                  const unitVideoCount = uLessons.reduce((acc, l) => acc + videos.filter(v => v.lessonId === l.id).length, 0);
+
+                  return (
+                    <div key={unit.id} className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden">
+                      <button
+                        onClick={() => toggleUnitExpand(unit.id)}
+                        className="w-full p-3 bg-slate-100/80 transition-colors flex items-center justify-between text-right cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-md bg-[#e11d48] text-white flex items-center justify-center font-bold text-[11px]">
+                            {unit.orderNumber}
+                          </span>
+                          <span className="text-xs font-bold text-slate-800 line-clamp-1">{unit.title}</span>
+                          {unitVideoCount > 0 && (
+                            <span className="bg-rose-100 text-[#e11d48] text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">
+                              🎬 {unitVideoCount}
+                            </span>
+                          )}
+                        </div>
+                        <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {isExpanded && (
+                        <div className="p-2 space-y-1">
+                          {uLessons.map(les => {
+                            const isSelectedLesson = les.id === activeLesson?.id;
+                            const lesVids = videos.filter(v => v.lessonId === les.id);
+                            const lesPdfs = pdfs.filter(p => p.lessonId === les.id);
+
+                            return (
+                              <button
+                                key={les.id}
+                                onClick={() => setActiveLessonId(les.id)}
+                                className={`w-full p-2.5 rounded-xl transition-all text-right cursor-pointer flex items-center justify-between ${
+                                  isSelectedLesson
+                                    ? 'bg-[#e11d48] text-white font-bold shadow-sm'
+                                    : 'hover:bg-rose-50 text-slate-700'
+                                }`}
+                              >
+                                <div className="space-y-1">
+                                  <div className="text-xs font-semibold flex items-center gap-1.5">
+                                    <span>{les.title}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-[10px]">
+                                    {lesVids.length > 0 ? (
+                                      <span className={isSelectedLesson ? 'bg-white/20 text-white font-bold px-1.5 py-0.5 rounded' : 'bg-rose-100 text-[#e11d48] font-bold px-1.5 py-0.5 rounded'}>
+                                        🎬 {lesVids.length} فيديو
+                                      </span>
+                                    ) : (
+                                      <span className={isSelectedLesson ? 'text-rose-100' : 'text-slate-400'}>لا يوجد فيديو</span>
+                                    )}
+                                    {lesPdfs.length > 0 && (
+                                      <span className={isSelectedLesson ? 'bg-white/20 text-white font-bold px-1.5 py-0.5 rounded' : 'bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded'}>
+                                        📕 {lesPdfs.length} كتب
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {isSelectedLesson && (
+                                  <span className="text-[10px] bg-white text-[#e11d48] font-bold px-2 py-0.5 rounded-md shadow-xs shrink-0">
+                                    يعرض الآن
+                                  </span>
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+          </div>
         </div>
 
       </div>
